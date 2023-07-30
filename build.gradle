@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.13'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
 }
 
 group = 'com.example'
@@ -9,6 +10,22 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '1.8'
+}
+
+//jacoco {
+//	toolVersion = "0.8.8"
+////	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir') as DirectoryProperty
+//}
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+	reports {
+		xml.required = false
+		csv.required = false
+		html.required = true
+	}
 }
 
 configurations {
@@ -26,6 +43,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.webjars:jquery:3.5.0'
+	implementation 'org.webjars:bootstrap:4.5.3'
+	implementation 'org.webjars:webjars-locator:0.40'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
@@ -36,3 +57,13 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+//tasks.jacoco(type: JacocoReport, dependsOn: 'test') {
+//	sourceSets sourceSets.main
+//	executionData = files(tasks.jacocoTestReport.executionData)
+//	reports {
+//		html.enabled = true
+//		xml.enabled = true
+//		csv.enabled = true
+//	}
+//}
