@@ -23,4 +23,11 @@
           ,#{role}
         )
     </insert>
+
+    <select id="findMany" resultType="MUser">
+        SELECT
+          *
+        FROM
+          m_user
+    </select>
 </mapper>
