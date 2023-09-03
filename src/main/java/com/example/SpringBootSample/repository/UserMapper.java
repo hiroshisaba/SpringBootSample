@@ -10,4 +10,6 @@ public interface UserMapper {
     int insertOne(MUser user);
 
     List<MUser> findMany();
+
+    MUser findOne(String userId);
 }

@@ -15,7 +15,7 @@ class DemoApplicationTest {
         @Test
         void 値が2の倍数のパターン() {
             int result = target.calc(2);
-            assertEquals(6,result);
+            assertEquals(7,result);
         }
 
 //        @Disabled
