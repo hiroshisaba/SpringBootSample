@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    ports:
+      - '8080:8080'
+    tty: true
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    environment:
+      SPRING_PROFILE_ACTIVE: docker
+    depends_on:
+      - db
+  db:
+    image: postgres:14
+    container_name: postgres_docker
+    restart: always
+    environment:
+      #POSTGRES_USER: developer
+      POSTGRES_PASSWORD: dke@keig24
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./docker/db/db-store:/var/lib/postgresql/data
+      - ./docker/db/initdb:/docker-entrypoint-initdb.d

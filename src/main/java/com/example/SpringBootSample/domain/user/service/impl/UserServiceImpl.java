@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper mapper;
 
@@ -23,5 +24,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<MUser> getUsers() {
         return mapper.findMany();
+    }
+
+    @Override
+    public MUser getUserOne(String userId) {
+        return mapper.findOne(userId);
     }
 }
