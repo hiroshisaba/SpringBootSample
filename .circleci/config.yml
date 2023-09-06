@@ -1,0 +1,81 @@
+# Java Gradle CircleCI 2.0 configuration file
+# See: https://circleci.com/docs/language-java/
+version: 2
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/configuration-reference/#jobs
+jobs:
+  build:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/SpringBootSample/src
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    # Add steps to the job
+    # See: https://circleci.com/docs/configuration-reference/#steps
+    steps:
+      - checkout:
+          path: ~/SpringBootSample
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: gradle dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk
+      - image: circleci/postgres
+        environment:
+          POSTGRES_USER: developer
+          POSTGRES_PASSWORD: dke@keig24
+          POSTGRES_DATABASE: spring_sample
+#    environment:
+#      BUNDLE_JOBS: "3"
+#      BUNDLE_RETRY: "3"
+#      APP_DATABASE_HOST: "127.0.0.1"
+#      RAILS_ENV: test
+    working_directory: ~/SpringBootSample/src
+    steps:
+      - checkout:
+          path: ~/SpringBootSample/src
+      #- ruby/install-deps
+      - run:
+          name: Database setup
+          command:
+            psql \
+            -d postgresql://db:5432/spring_sample \
+            -c "CREATE SCHEMA dev"
+      - run:
+          name: test
+          command: gradle test
+          environment:
+            SPRING_PROFILE_ACTIVE: "docker"
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
