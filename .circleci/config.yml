@@ -11,15 +11,31 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
+    working_directory: ~/SpringBootSample
     steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+            - v1-dependencies-{{ .Branch }}
+            - v1-dependencies-
       - run: echo 'Hello world'
+      - run: gradle dependencies
+      - run: gradle build -x test
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+      - run:
+          name: テストの実施
+          command: gradle test
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/circleci-images/
       # - image: circleci/postgres:9.4
 
-#    working_directory: ~/SpringBootSample/src
-#
+
 #    environment:
 #      # Customize the JVM maximum heap limit
 #      JVM_OPTS: -Xmx3200m
