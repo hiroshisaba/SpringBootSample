@@ -31,7 +31,6 @@ jobs:
           root: ~/SpringBootSample
           paths:
             - .
-
   test:
     docker:
       - image: circleci/openjdk:8-jdk
@@ -49,5 +48,5 @@ workflows:
     jobs:
       - build
       - test:
-        requires:
-          - build
+          requires:
+            - build
