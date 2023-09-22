@@ -1,0 +1,52 @@
+# Java Gradle CircleCI 2.0 configuration file
+# See: https://circleci.com/docs/language-java/
+version: 2
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/configuration-reference/#jobs
+jobs:
+  build:
+    docker:
+      # Dockerイメージ指定
+      - image: circleci/openjdk:8-jdk
+    # 作業ディレクトリ
+    working_directory: ~/SpringBootSample
+    steps:
+      # ソースのチェックアウト
+      - checkout
+      # 依存関係をダウンロードしてキャッシュする
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+            - v1-dependencies-{{ .Branch }}
+            - v1-dependencies-
+      - run: gradle dependencies
+      - run: gradle build -x test
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ .Branch }}-{{ checksum "build.gradle" }}
+      # 他のjobでも共有する
+      - persist_to_workspace:
+          root: ~/SpringBootSample
+          paths:
+            - .
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/SpringBootSample
+    steps:
+      - attach_workspace:
+          at: ~/SpringBootSample
+      - run:
+          name: テストの実施
+          command: gradle test
+
+workflows:
+  version: 2
+  build_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
