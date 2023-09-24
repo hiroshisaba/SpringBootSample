@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserMapper {
     int insertOne(MUser user);
 
-    List<MUser> findMany();
+    List<MUser> findMany(MUser user);
 
     MUser findOne(String userId);
 

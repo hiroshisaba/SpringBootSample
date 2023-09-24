@@ -49,6 +49,14 @@
           *
         FROM
           m_user
+        <where>
+            <if test="userId != null">
+                user_id LIKE '%' || #{userId} || '%'
+            </if>
+            <if test="userName != null">
+                AND user_name LIKE '%' || #{userName} || '%'
+            </if>
+        </where>
     </select>
 
     <update id="updateOne">
