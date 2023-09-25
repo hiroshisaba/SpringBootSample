@@ -1,8 +1,11 @@
 package com.example.SpringBootSample.form;
 
+import com.example.SpringBootSample.domain.user.model.Department;
+import com.example.SpringBootSample.domain.user.model.Salary;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserDetailForm {
@@ -12,4 +15,6 @@ public class UserDetailForm {
     private Date birthday;
     private Integer age;
     private Integer gender;
+    private Department department;
+    private List<Salary> salaryList;
 }
