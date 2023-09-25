@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.relational.core.sql.In;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class MUser {
@@ -15,4 +16,6 @@ public class MUser {
     private Integer gender;
     private Integer departmentId;
     private String role;
+    private Department department;
+    private List<Salary> salaryList;
 }
