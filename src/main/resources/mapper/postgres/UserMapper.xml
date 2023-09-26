@@ -67,12 +67,12 @@
           m_department dep
         ON
           usr.department_id = dep.department_id
-        AND
-          user_id = #{userId}
         LEFT JOIN
           t_salary sal
         ON
           usr.user_id = sal.user_id
+        WHERE
+          usr.user_id = #{userId}
 
     </select>
 

@@ -5,6 +5,7 @@ import com.example.SpringBootSample.domain.user.service.UserService;
 import com.example.SpringBootSample.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,11 +32,15 @@ public class UserServiceImpl implements UserService {
         return mapper.findOne(userId);
     }
 
+    @Transactional
     @Override
     public void updateUserOne(String userId, String password, String userName) {
         mapper.updateOne(userId,password,userName);
+
+//        int i = 1/0;
     }
 
+    @Transactional
     @Override
     public void deleteUserOne(String userId) {
         int count =  mapper.deleteOne(userId);
