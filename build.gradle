@@ -48,6 +48,8 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.6.0'
 	implementation 'org.flywaydb:flyway-core:9.13.0'
 	implementation 'org.springframework.boot:spring-boot-configuration-processor:2.7.14'
+	implementation 'aspectj:aspectjweaver:1.5.4'
+	implementation 'org.springframework:spring-aop'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
