@@ -1,14 +1,24 @@
 package com.example.SpringBootSample.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     /**
      * セキュリティを適用しない
@@ -45,6 +55,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .defaultSuccessUrl("/user/list",true);
         // CSRF対策を無効に設定
         http.csrf().disable();
+    }
+
+    /**
+     * 認証の設定
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        PasswordEncoder passwordEncoder = passwordEncoder();
+        auth.inMemoryAuthentication().withUser("user")
+                .password(passwordEncoder.encode("user")).roles("GENERAL")
+                .and()
+                .withUser("admin")
+                .password(passwordEncoder.encode("admin"))
+                .roles("ADMIN");
     }
 
 }
