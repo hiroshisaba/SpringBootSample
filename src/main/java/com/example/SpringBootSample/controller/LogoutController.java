@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 public class LogoutController {
 
-    @PostMapping("/logout")
-    public String postLogout() {
-        log.info("ログアウト");
-        return "redirect:/login";
-    }
+//    @PostMapping("/logout")
+//    public String postLogout() {
+//        log.info("ログアウト");
+//        return "redirect:/login";
+//    }
 }
