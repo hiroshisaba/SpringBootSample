@@ -108,4 +108,13 @@
           user_id = #{userId}
     </delete>
 
+    <select id="findLoginUser" resultType="MUser">
+        SELECT
+          *
+        FROM
+          m_user
+        WHERE
+          user_id = #{userId}
+    </select>
+
 </mapper>
