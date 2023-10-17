@@ -5,6 +5,7 @@ import com.example.SpringBootSample.domain.user.service.UserService;
 import com.example.SpringBootSample.form.GroupOrder;
 import com.example.SpringBootSample.form.SignupForm;
 import com.example.SpringBootSample.form.UserDetailForm;
+import com.example.SpringBootSample.form.UserListForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -30,6 +32,16 @@ public class UserRestController {
     @Autowired
     private MessageSource messageSource;
 
+    /**
+     * ユーザーを検索
+     */
+    @GetMapping("/get/list")
+    public List<MUser> getUserList(UserListForm form) {
+
+        MUser user = modelMapper.map(form, MUser.class);
+        List<MUser> userList = userService.getUsers(user);
+        return userList;
+    }
     /**
      * ユーザーを登録
      */
